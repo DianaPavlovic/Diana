@@ -1,0 +1,83 @@
+"""importuje knihovnu pro random"""
+import matplotlib.pyplot as plt
+from random import *
+import random
+from math import sqrt
+from fractions import Fraction as frac
+
+random.seed(1724)
+
+p_0=[]
+p_1=[]
+p_2=[]
+p_0f=[]
+p_1f=[]
+p_2f=[]
+for j in range(100):
+#do n1 ukladam soucty  poctu sudych hodu, do n2 ukladam soucty poctu lichych hodu
+    n1=[]
+    n2= []
+#100 her probehne, pokud jich chci vic, zmenim 100 na neco jineho
+    for x in range(100):
+    #ukladam hodnoty hodu
+        local_list = []
+    #hazej dokud nehodi 6 a vzdy uloz cislo
+        while True:
+            b = randint(1,6)
+            local_list.append(b)
+            if b==6:
+                break
+    #do n1 uloz pocty sudych hodu, do n2 lichych hodu
+        n1.append(local_list.count(2) + local_list.count(4))
+        n2.append(local_list.count(1) + local_list.count(3) + local_list.count(5))
+
+    p_0f.append(frac(100,(sum(n1)+sum(n2)+100)))
+    p_1f.append(frac((sum(n1)),(sum(n1)+sum(n2)+100)))
+    p_2f.append(frac((sum(n2)),(sum(n1)+sum(n2)+100)))
+    p_0.append(100/(sum(n1)+sum(n2)+100))
+    p_1.append((sum(n1))/(sum(n1)+sum(n2)+100))
+    p_2.append((sum(n2))/(sum(n1)+sum(n2)+100))
+
+p0=p_0f[0]
+p1=p_1f[0]
+p2=p_2f[0]
+print("p_0", p0)
+print("p_1", p1)
+print("p_2", p2)
+
+print("odhad pro p_0: (", p0-(((1.96*(sqrt(p0*p0*(1-p0)))))/(10)), ", ", p0+(((1.96*(sqrt(p0*p0*(1-p0)))))/(10)), ")")
+print("odhad pro p_1: (", p1-(((1.96*(sqrt(p1*p0*(1-p1)))))/(10)), ", ", p1+(((1.96*(sqrt(p1*p0*(1-p1)))))/(10)), ")")
+print("odhad pro p_2: (", p2-(((1.96*(sqrt(p2*p0*(1-p2)))))/(10)), ", ", p2+(((1.96*(sqrt(p2*p0*(1-p2)))))/(10)), ")")
+# pocet intervalu
+bins = 10
+
+# histogramy pro jednotlive odhady
+plt.hist(p_0, bins, color='orangered',
+         histtype='bar', rwidth=0.8)
+
+plt.xlabel('Vypočtený odhad')
+plt.ylabel('Počet odpovídajících pozorování')
+plt.title('Odhady parametru p_0')
+plt.savefig("p_0.pdf")
+plt.show()
+
+plt.hist(p_1, bins, color='darkviolet',
+         histtype='bar', rwidth=0.8)
+
+
+plt.xlabel('Vypočtený odhad')
+plt.ylabel('Počet odpovídajících pozorování')
+plt.title('Odhady parametru p_1')
+plt.savefig("p_1.pdf")
+plt.show()
+
+plt.hist(p_2, bins, color='darkcyan',
+         histtype='bar', rwidth=0.8)
+
+
+plt.xlabel('Vypočtený odhad')
+plt.ylabel('Počet odpovídajících pozorování')
+plt.title('Odhady parametru p_2')
+plt.savefig("p_2.pdf")
+plt.show()
+
